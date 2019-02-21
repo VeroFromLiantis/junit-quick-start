@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.mockito.ArgumentMatchers;
+import static org.mockito.Matchers.*;
 
 @ExtendWith(MockitoExtension.class)
 
@@ -153,6 +154,32 @@ public class GreetingServiceTest {
 		InOrder inOrder = Mockito.inOrder(helloMock);
 		inOrder.verify(helloMock).sayHello("World");
 		inOrder.verify(helloMock).sayHello("Mars");
+	}
+	
+	@Test
+	@DisplayName("Test 11 Greet verify Arguments")
+	//@Disabled("Error op any")
+	public void testGreetVerifyArguments() {
+		// prepare mock
+		Mockito.when(helloMock.sayHello(any()))
+	           .then(inv -> "Hello " + inv.getArgument(0));
+		// execute test
+		greeting.greet("Moon");
+		// verify mock
+		Mockito.verify(helloMock).sayHello(any());
+	}
+	 
+	@Test
+	@DisplayName("Test 12 Greet verify Time")
+	//@Disabled("Error op any")
+	public void testGreetVerifyTime() {
+		// prepare mock
+		Mockito.when(helloMock.sayHello("World"))
+	           .thenReturn("Hello World");
+		// execute test
+		greeting.greet("World");
+		// verify mock
+		Mockito.verify(helloMock,Mockito.timeout(10)).sayHello("World");
 	}
 	
 	}
